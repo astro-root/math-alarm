@@ -4,6 +4,7 @@ import 'package:math_alarm/features/problem_generator/generators/circle_generato
 import 'package:math_alarm/features/problem_generator/generators/linear_equation_generator.dart';
 import 'package:math_alarm/features/problem_generator/generators/quadratic_equation_generator.dart';
 import 'package:math_alarm/features/problem_generator/generators/trigonometry_generator.dart';
+import 'package:math_alarm/features/problem_generator/validator/problem_validator.dart';
 
 void main() {
   group('generators are reproducible with a seed', () {
@@ -58,6 +59,21 @@ void main() {
         answer.func == TrigFunction.tan && answer.angle % 180 == 90,
         isFalse,
       );
+    }
+  });
+
+  test('generated problems remain valid across a range of seeds', () {
+    const validator = MathematicalProblemValidator();
+
+    for (var seed = 0; seed <= 100; seed++) {
+      expect(validator.isValid(LinearEquationGenerator(seed: seed).generate()), isTrue);
+      expect(validator.isValid(CircleGenerator(seed: seed).generate()), isTrue);
+      expect(
+        validator.isValid(QuadraticEquationGenerator(seed: seed).generate()),
+        isTrue,
+      );
+      expect(
+        validator.isValid(TrigonometryGenerator(seed: seed).generate()), isTrue);
     }
   });
 }

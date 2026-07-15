@@ -33,4 +33,11 @@ void main() {
       isFalse,
     );
   });
+
+  test('rejects a logarithm base of one', () {
+    expect(
+      validator.isValid(problemWith(const LogAnswer(base: 1, arg: 2))),
+      isFalse,
+    );
+  });
 }
